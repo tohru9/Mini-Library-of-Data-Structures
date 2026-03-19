@@ -1,6 +1,7 @@
 #pragma once
 #include "../interface/list.h" 
 #include <stdexcept>
+using namespace std;
 
 template <typename T>
 class DLL : public List<T> {
@@ -21,7 +22,7 @@ private:
     // where to start searching
     Node* findStudentAt(size_t index) const {
         if (index >= currentSize) {
-            throw std::out_of_range("No one is here lagi");
+            throw out_of_range("No one is here lagi");
         }
 
         Node* searcher;
@@ -58,7 +59,7 @@ public:
 
     void add(const size_t i, const T& x) override {
         if (i > currentSize) {
-            throw std::out_of_range("Index out of bounds.");
+            throw out_of_range("Index out of bounds.");
         }
 
         Node* newcomer = new Node(x);
@@ -98,7 +99,7 @@ public:
 
     T remove(const size_t i) override {
         if (currentSize == 0) {
-            throw std::out_of_range("No one to remove breh");
+            throw out_of_range("No one to remove breh");
         }
         
         Node* target = findStudentAt(i);
@@ -147,4 +148,55 @@ public:
     size_t size() const override {
         return currentSize;
     }
+
+    void checkNeighbors(const T& studentName) const {
+        Node* searcher = frontOfList;
+        
+        // find student
+        while (searcher != nullptr && searcher->data != studentName) {
+            searcher = searcher->personBehindMe;
+        }
+
+        if (searcher == nullptr) {
+            cout << studentName << " skipped class today, what the helly" << endl;
+            return;
+        }
+
+        cout << "hence he is investigating.... " << studentName << endl;
+        
+        // Look ahead
+        if (searcher->personAheadOfMe != nullptr) {
+            cout << "Sitting in front: " << searcher->personAheadOfMe->data << endl;
+        } else {
+            cout << "Sitting in front: enk error 101 nobody (front na lagi siya)" << endl;
+        }
+
+        // Look behind
+        if (searcher->personBehindMe != nullptr) {
+            cout << "Sitting behind: " << searcher->personBehindMe->data << endl;
+        } else {
+            cout << "Sitting behind: std::throw pls way tao dinhi (back siya ois)" << endl;
+        }
+    }
+
+    void patrolBackwards() const {
+        if (currentSize == 0) {
+            cout << "[The list is empty. Sir Ryan is suspicious.]" << endl;
+            return;
+        }
+
+        cout << "[Back of List] ";
+        Node* patroller = backOfList; 
+
+        // Walk backward using the personAheadOfMe pointer
+        while (patroller != nullptr) {
+            cout << patroller->data;
+            if (patroller->personAheadOfMe != nullptr) {
+                cout << " -> ";
+            }
+            patroller = patroller->personAheadOfMe;
+        }
+        cout << " [Front of List]" << endl;
+    }
+
 };

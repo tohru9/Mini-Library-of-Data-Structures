@@ -12,7 +12,11 @@ private:
         Node* personAheadOfMe;  //prev node
         Node* personBehindMe;   //next node
         
-        Node(T val) : data(val), personAheadOfMe(nullptr), personBehindMe(nullptr) {}
+        Node(T val){
+            data = val;
+            personAheadOfMe = nullptr; 
+            personBehindMe = nullptr;
+        }
     };
 
     Node* frontOfList; // head

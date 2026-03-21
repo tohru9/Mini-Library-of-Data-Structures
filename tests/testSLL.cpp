@@ -1,7 +1,10 @@
 #include <iostream>
 #include "../src/SLL.h" 
-
+#include<chrono>
+using namespace std::chrono;
 using namespace std;
+
+auto start = high_resolution_clock::now();
 
 int main() {
     SLL<int> myQueue; 
@@ -35,12 +38,6 @@ int main() {
     cout << "############################" << endl;
 
     // FOR TESTING THE NEW ADDITIONS
-
-
-
-
-
-
 
 
     SLL<string> line;
@@ -90,5 +87,11 @@ int main() {
     } catch (const out_of_range& e) {
         cout << "Error Caught: " << e.what() << endl; // Should print "Who you calling??? again brotato"
     }
+
+    auto stop = high_resolution_clock::now();
+    duration<double> duration = stop - start;
+
+    std::cout << "Execution time: " << duration.count() << " seconds" << endl;
+
     return 0;
 }

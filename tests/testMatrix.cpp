@@ -1,6 +1,12 @@
 #include <iostream>
 #include <cassert>
 #include "../src/adjacencyMatrix.h"
+#include <chrono> 
+#include <chrono>
+using namespace std::chrono;
+using namespace std;
+ 
+const int N = 1000;
 
 void test_function()
 {
@@ -55,7 +61,6 @@ int main()
     try
     {
         test_function();
-
         std::cout << "\n--- All Graph Tests Passed! ---" << std::endl;
     }
     catch (const std::exception &e)
@@ -64,5 +69,55 @@ int main()
         return 1;
     }
 
+    //Benchmark
+    cout << "\n=== Benchmark (" << N << " vertices) ===" << endl;
+ 
+    AdjacencyMatrix<int> bench(N);
+ 
+    high_resolution_clock::time_point start, stop;
+    duration<double> dur;
+ 
+    // Benchmark 1: add all edges (complete graph)
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (i != j) bench.addEdge(i, j);
+        }
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "addEdge   for all pairs:  " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 2: hasEdge on all pairs
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            bench.hasEdge(i, j);
+        }
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "hasEdge   for all pairs:  " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 3: outEdges for every vertex
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.outEdges(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "outEdges  for all vertices:       " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 4: remove all edges
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            if (i != j) bench.removeEdge(i, j);
+        }
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "removeEdge for all pairs: " << dur.count() << " seconds" << endl;
+ 
     return 0;
 }

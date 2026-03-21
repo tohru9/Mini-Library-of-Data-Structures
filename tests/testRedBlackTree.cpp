@@ -1,12 +1,16 @@
 #include <iostream>
 #include "../src/RedBlackTree.h"
-
+#include <chrono> 
+using namespace std::chrono;
 using namespace std;
+
+const int N = 1000000;
 
 int main() {
 
     RedBlackTree<int> tree;
 
+    // === Functional Test ===
     // ADD
     cout << "Adding elements: 5, 9, 2, 1, 6, 10, 3, 4" << endl;
     tree.add(5);
@@ -77,5 +81,48 @@ int main() {
 
     cout << "Final size: " << tree.size() << " (expect 0)" << endl;
 
+    // Benchmark
+    cout << "\n=== Benchmark (" << N << " operations) ===" << endl;
+
+    RedBlackTree<int> bench;
+    high_resolution_clock::time_point start, stop;
+    duration<double> dur;
+
+    // Benchmark 1: N in-order insertions (add) -- worst case
+    start = high_resolution_clock::now();
+    for(int i = 0; i < N; i++){
+        bench.add(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Insert " << N << " elements (sorted order): " << dur.count() << " seconds" << endl;
+
+    //Benchmark 2: N successful finds
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.find(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Find   " << N << " elements (all present):  " << dur.count() << " seconds" << endl;
+
+    // Benchmark 3: N unsuccessful finds
+    start = high_resolution_clock::now();
+    for (int i = N; i < 2 * N; i++) {
+        bench.find(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Find   " << N << " elements (none present): " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 4: N removals
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.remove(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Remove " << N << " elements:                " << dur.count() << " seconds" << endl;
+ 
     return 0;
 }

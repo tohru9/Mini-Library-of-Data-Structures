@@ -55,27 +55,28 @@ All test files follow the same pattern — just swap the filename.
 
 ---
 
-## Demo Application
+## Benchmarking
 
-A **Browser Tab Manager** is included as a practical demo of the Array Deque, simulating how a browser manages open tabs using front/back insertions, reordering, and a closed-tab history.
+Every test file includes a **crude benchmark** that measures the execution time of each data structure under 100,000 repeated operations. Benchmarks are timed using `std::chrono` and cover the most meaningful operations for each structure — inserts, removes, searches, and access patterns.
 
-```bash
-g++ testBrowserTabManager.cpp -o testBrowserTabManager
-./testBrowserTabManager
+This makes it easy to observe real performance differences, such as why inserting at the front of an Array Deque is ~300x slower than inserting at the back, or why a Red-Black Tree guarantees O(log n) even in the worst case while a Skip List only promises it on average.
+
+Sample benchmark output from the **Array Deque** (100,000 operations):
+
+```
+Insert 100,000 elements at back:       0.0013 seconds
+Insert 100,000 elements at front:      0.4148 seconds
+Get 100,000 elements (random index):   ~0.0000 seconds
+Remove 100,000 elements from back:     0.0006 seconds
+Remove 100,000 elements from front:    0.4154 seconds
 ```
 
----
-
-## TODO
-
-- [ ] Add iterator support across all structures
-- [ ] Add more edge case tests
-- [ ] Add time complexity annotations directly in source files
+To run the benchmarks, simply compile and run any test file — the benchmark output appears at the end of each run automatically.
 
 ---
 
 ## Contact
 
-**Hyacinth Agustin** — UP Cebu, CMSC 123, 2025–2026
-**Sean Mayol** — UP Cebu, CMSC 123, 2025–2026
-**Russell Beduya** — UP Cebu, CMSC 123, 2025–2026
+**Hyacinth Agustin** — UP CEBU, CMSC 123, 2025–2026
+**Russell Beduya** — UP CEBU, CMSC 123, 2025–2026
+**Sean Mayol** — UP CEBU, CMSC 123, 2025–2026

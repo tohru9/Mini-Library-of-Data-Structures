@@ -6,11 +6,12 @@
 using namespace std::chrono;
 using namespace std;
 
+const int N = 1000000;
+
 int main() {
-    auto start = high_resolution_clock::now();
 
     ArrayStack<int> stack;
-
+    //=== Functional Test ===
     stack.push(10);
     stack.push(20);
     stack.push(30);
@@ -70,27 +71,46 @@ int main() {
     std::cout << "Pop: " << stack.pop() << std::endl;    // 42
     std::cout << "Size: " << stack.size() << std::endl;  // 0
 
-    duration<double> duration = high_resolution_clock::now() - start;
-    std::cout << "\nExecution time: " << duration.count() << " seconds" << endl;
+    // Benchmark 1: N pushes
+    cout << "\n=== Benchmark (" << N << " operations) ===" << endl;
+ 
+    ArrayStack<int> bench;
+ 
+    auto start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.push(i);
+    }
+    auto stop = high_resolution_clock::now();
+    duration<double> dur = stop - start;
+    cout << "Push " << N << " elements:         " << dur.count() << " seconds" << endl;
 
-    return 0;
+    // Benchmark 2: N tops (peek) 
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.top();
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Top " << N << " times:         " << dur.count() << " seconds" << endl;
+
+    // Benchmark 3: N pops 
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.pop();
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Pop " << N << " elements:         " << dur.count() << " seconds" << endl;
+
+    // Benchmark 3: Alternate push and pop 
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.push(i);
+        bench.pop();
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Push and Pop " << N << " elements:         " << dur.count() << " seconds" << endl;
+
 }
-    /*
-    cout << "There are 3 things inside Queen's Bag" << endl;
-    stack.push("Perfume");
-    stack.push("Umbrella");
-    stack.push("Wet Wipes");
-
-    //cout << "Top: " << stack.top() << endl;    
-
-    cout << "Althea visits Queen in her Math 54 class and asks if she could borrow her perfume" << endl;
-    cout << "Queen hurriedly opened her bag and grabbed the perfume, but it was in the bottom of her bag" << endl;
-    cout << "Queen gets the one on top which is her " << stack.pop() << endl;    
-    cout << "And then her " << stack.pop() << endl;
-    cout << "Now she can finally grab what she needed and let Althea borrow some " << stack.pop() << endl;   
-    cout << "However, she needs to put back everything again :< so hassle" << endl;
-    cout << "She puts her umbrella back." << stack.push("Umbrella") << endl;
-    cout << "Queen!" << endl;
-    cout <<
-    */
 

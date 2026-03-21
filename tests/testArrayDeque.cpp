@@ -2,10 +2,14 @@
 #include <string>
 #include <stdexcept>
 #include "../src/arrayDeque.h"
-
+#include <chrono>
+using namespace std::chrono;
 using namespace std;
 
 int main() {
+
+auto start = high_resolution_clock::now();
+
     cout << "Situation: Waiting for sr eli tan to review our code" << endl << endl;
 
     ArrayDeque<string> reviewLine(5); // there are 5 chairs/slots available
@@ -94,6 +98,11 @@ int main() {
     reviewLine.displayLine();
 
     cout << "\n  Please sir 1.0 sa  Final Project t-t \n\n";
+
+    auto stop = high_resolution_clock::now();
+    duration<double> duration = stop - start;
+
+    std::cout << "Execution time: " << duration.count() << " seconds" << endl;
 
     return 0;
 }

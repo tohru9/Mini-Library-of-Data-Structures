@@ -1,9 +1,13 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include "../src/DLL.h" 
-
+#include "../src/DLL.h"
+#include <chrono> 
+using namespace std::chrono;
 using namespace std;
+
+
+auto start = high_resolution_clock::now();
 
 // for printing thr list
 void printList(const DLL<string>& row) {
@@ -98,6 +102,11 @@ int main() {
     }    
 
     cout << "\n Quiz is done and no one passed..." << endl;
+
+    auto stop = high_resolution_clock::now();
+    duration<double> duration = stop - start;
+
+    std::cout << "Execution time: " << duration.count() << " seconds" << endl;
 
     return 0;
 }

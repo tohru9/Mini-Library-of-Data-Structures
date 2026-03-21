@@ -1,6 +1,12 @@
 #include <iostream>
 #include <cassert>
 #include "../src/adjacencyMatrix.h"
+#include <chrono> 
+using namespace std::chrono;
+using namespace std;
+
+
+auto start = high_resolution_clock::now();
 
 void test_function()
 {
@@ -55,7 +61,6 @@ int main()
     try
     {
         test_function();
-
         std::cout << "\n--- All Graph Tests Passed! ---" << std::endl;
     }
     catch (const std::exception &e)
@@ -63,6 +68,11 @@ int main()
         std::cerr << "Test failed with exception: " << e.what() << std::endl;
         return 1;
     }
+
+    auto stop = high_resolution_clock::now();
+    duration<double> duration = stop - start;
+
+    std::cout << "Execution time: " << duration.count() << " seconds" << endl;
 
     return 0;
 }

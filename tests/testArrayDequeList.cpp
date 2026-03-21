@@ -1,9 +1,13 @@
 #include <iostream>
 #include "../src/arrayDequeList.h"   
-
+#include <chrono>
+using namespace std::chrono;
 using namespace std;
 
 int main() {
+
+auto start = high_resolution_clock::now();
+    
     ArrayDeque<int> ListOfNums;
 
     cout << "Adding elements..." << endl;
@@ -33,5 +37,10 @@ int main() {
 
     cout << "\nFinal size: " << ListOfNums.size() << endl;
 
-    return 0;
+auto stop = high_resolution_clock::now();
+duration<double> duration = stop - start;
+
+std::cout << "Execution time: " << duration.count() << " seconds" << endl;
+
+return 0;
 }

@@ -1,7 +1,10 @@
 #include <iostream>
 #include "../src/RedBlackTree.h"
-
+#include <chrono> 
+using namespace std::chrono;
 using namespace std;
+
+auto start = high_resolution_clock::now();
 
 int main() {
 
@@ -76,6 +79,11 @@ int main() {
     cout << endl;
 
     cout << "Final size: " << tree.size() << " (expect 0)" << endl;
+
+    auto stop = high_resolution_clock::now();
+    duration<double> duration = stop - start;
+
+    std::cout << "Execution time: " << duration.count() << " seconds" << endl;
 
     return 0;
 }

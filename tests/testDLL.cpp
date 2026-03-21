@@ -2,12 +2,12 @@
 #include <string>
 #include <stdexcept>
 #include "../src/DLL.h"
-#include <chrono> 
+#include <chrono>
+ 
 using namespace std::chrono;
 using namespace std;
-
-
-auto start = high_resolution_clock::now();
+ 
+const int N = 1000000;
 
 // for printing thr list
 void printList(const DLL<string>& row) {
@@ -103,10 +103,59 @@ int main() {
 
     cout << "\n Quiz is done and no one passed..." << endl;
 
-    auto stop = high_resolution_clock::now();
-    duration<double> duration = stop - start;
-
-    std::cout << "Execution time: " << duration.count() << " seconds" << endl;
-
+    // Benchmark
+    cout << "\n=== Benchmark (" << N << " operations) ===" << endl;
+ 
+    DLL<int> bench;
+ 
+    high_resolution_clock::time_point start, stop;
+    duration<double> dur;
+ 
+    // Benchmark 1: N insertions at the front (index 0)
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.add(0, i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "add      " << N << " elements at front:    " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 2: N insertions at the back
+    DLL<int> bench2;
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench2.add(bench2.size(), i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "add      " << N << " elements at back:     " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 3: N get at index 0 (fast for DLL — no traversal needed)
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.get(0);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "get      " << N << " times at index 0:     " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 4: N removals from the front
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.remove(0);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "remove   " << N << " elements at front:    " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 5: N removals from the back
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench2.remove(bench2.size() - 1);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "remove   " << N << " elements at back:     " << dur.count() << " seconds" << endl;
+ 
     return 0;
 }

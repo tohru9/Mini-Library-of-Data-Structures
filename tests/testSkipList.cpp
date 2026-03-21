@@ -2,10 +2,15 @@
 #include <string>
 #include <stdexcept>
 #include "../src/skipList.h" 
-
+#include <chrono>
+ 
+using namespace std::chrono;
 using namespace std;
+ 
+const int N = 100000;
 
 int main() {
+    //=== Functional Test ===
     cout << "\nCMSC 127: Sir Erik's SQL Database using skip list haha sorna " << endl << endl;
 
     SkipList<string> database;
@@ -56,5 +61,49 @@ int main() {
 
     cout << "\nTotal rows remaining in database: " << database.size() << endl;
 
+    // Benchmark
+    cout << "\n=== Benchmark (" << N << " operations) ===" << endl;
+ 
+    SkipList<int> bench;
+ 
+    high_resolution_clock::time_point start, stop;
+    duration<double> dur;
+ 
+    // Benchmark 1: N insertions
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.add(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "add    " << N << " elements:               " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 2: N successful finds
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.find(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "find   " << N << " elements (all present): " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 3: N unsuccessful finds
+    start = high_resolution_clock::now();
+    for (int i = N; i < 2 * N; i++) {
+        try { bench.find(i); } catch (...) {}
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "find   " << N << " elements (none present):" << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 4: N removals
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.remove(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "remove " << N << " elements:               " << dur.count() << " seconds" << endl;
+ 
     return 0;
 }

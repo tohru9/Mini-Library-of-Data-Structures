@@ -6,10 +6,11 @@
 using namespace std::chrono;
 using namespace std;
 
+const int N = 1000000;
+
 int main() {
 
-auto start = high_resolution_clock::now();
-
+    // === Functional Test ===
     cout << "Situation: Waiting for sr eli tan to review our code" << endl << endl;
 
     ArrayDeque<string> reviewLine(5); // there are 5 chairs/slots available
@@ -19,7 +20,7 @@ auto start = high_resolution_clock::now();
     cout << "Students currently waiting: " << reviewLine.size() << endl << endl;
 
     // normal add, at the tail
-    cout << " sr eli tan arrives " << endl;
+    cout << " sir eli tan arrives " << endl;
     reviewLine.addLast("Hya");
     reviewLine.addLast("Russel");
     reviewLine.addLast("Sean");
@@ -99,10 +100,59 @@ auto start = high_resolution_clock::now();
 
     cout << "\n  Please sir 1.0 sa  Final Project t-t \n\n";
 
-    auto stop = high_resolution_clock::now();
-    duration<double> duration = stop - start;
-
-    std::cout << "Execution time: " << duration.count() << " seconds" << endl;
-
+    // Benchmark
+    cout << "=== Benchmark (" << N << " operations) ===" << endl;
+ 
+    ArrayDeque<int> bench(N);
+ 
+    high_resolution_clock::time_point start, stop;
+    duration<double> dur;
+ 
+    // Benchmark 1: N addLast
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.addLast(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "addLast  " << N << " elements:              " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 2: N addFirst
+    ArrayDeque<int> bench2(N);
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench2.addFirst(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "addFirst " << N << " elements:              " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 3: N peekFirst 
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.peekFirst();
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "peekFirst " << N << " times:                " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 4: N removeLast 
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.removeLast();
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "removeLast  " << N << " elements:           " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 5: N removeFirst 
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench2.removeFirst();
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "removeFirst " << N << " elements:           " << dur.count() << " seconds" << endl;
+ 
     return 0;
 }

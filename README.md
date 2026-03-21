@@ -57,7 +57,7 @@ All test files follow the same pattern — just swap the filename.
 
 ## Benchmarking
 
-Every test file includes a **crude benchmark** that measures the execution time of each data structure under 100,000 repeated operations. Benchmarks are timed using `std::chrono` and cover the most meaningful operations for each structure — inserts, removes, searches, and access patterns.
+Every test file includes a **crude benchmark** that measures the execution time of each data structure under 100,000 - 1,000,000 repeated operations. Benchmarks are timed using `std::chrono` and cover the most meaningful operations for each structure — inserts, removes, searches, and access patterns.
 
 This makes it easy to observe real performance differences, such as why inserting at the front of an Array Deque is ~300x slower than inserting at the back, or why a Red-Black Tree guarantees O(log n) even in the worst case while a Skip List only promises it on average.
 

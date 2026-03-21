@@ -37,7 +37,7 @@ Structures implemented:
 ```
 Mini-Library-of-Data-Structures/
 ├── interface/       # Abstract base classes (List, SSet, etc.)
-├── backing/         # Backing structures (dynamic array, node, etc.)
+├── backing/         # Backing structures (dynamic array)
 ├── src/             # ADT implementations
 └── tests/           # Test file for each implementation
 ```

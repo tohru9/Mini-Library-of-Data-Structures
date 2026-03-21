@@ -2,6 +2,11 @@
 #include <string>
 #include <vector>
 #include "../src/ChainedHashTable.h"
+#include <chrono> 
+using namespace std::chrono;
+using namespace std;
+
+const int N = 1000000;
 
 template <typename T>
 void report(const std::string &testName, T actual, T expected)
@@ -84,5 +89,50 @@ int main()
     test_strings();
 
     std::cout << "\nAll tests completed.\n";
+
+    // Benchmark
+    cout << "\n=== Benchmark (" << N << " operations) ===" << endl;
+ 
+    ChainedHashTable<int> bench;
+ 
+    high_resolution_clock::time_point start, stop;
+    duration<double> dur;
+ 
+    // Benchmark 1: N insertions
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.add(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Add    " << N << " elements:              " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 2: N successful finds
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.find(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Find   " << N << " elements (all present): " << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 3: N unsuccessful finds
+    start = high_resolution_clock::now();
+    for (int i = N; i < 2 * N; i++) {
+        bench.find(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Find   " << N << " elements (none present):" << dur.count() << " seconds" << endl;
+ 
+    // Benchmark 4: N removals
+    start = high_resolution_clock::now();
+    for (int i = 0; i < N; i++) {
+        bench.remove(i);
+    }
+    stop = high_resolution_clock::now();
+    dur = stop - start;
+    cout << "Remove " << N << " elements:              " << dur.count() << " seconds" << endl;
+ 
     return 0;
 }

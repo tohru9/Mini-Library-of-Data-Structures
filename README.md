@@ -76,4 +76,6 @@ g++ testBrowserTabManager.cpp -o testBrowserTabManager
 
 ## Contact
 
-**Hyacinth** — UP Visayas, CMSC 123, 2025–2026
+**Hyacinth Agustin** — UP Cebu, CMSC 123, 2025–2026
+**Sean Mayol** — UP Cebu, CMSC 123, 2025–2026
+**Russell Beduya** — UP Cebu, CMSC 123, 2025–2026

@@ -3,7 +3,6 @@
 #include <vector>
 #include "../src/ChainedHashTable.h"
 
-// Helper to format output for easier reading
 template <typename T>
 void report(const std::string &testName, T actual, T expected)
 {
